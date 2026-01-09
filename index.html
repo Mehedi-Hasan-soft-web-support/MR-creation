@@ -506,17 +506,160 @@
         .hidden {
             display: none;
         }
+
+        /* Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .popup-box {
+            background: linear-gradient(135deg, var(--white) 0%, var(--bg-cream) 100%);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease;
+            border: 3px solid var(--gold-accent);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary-green);
+            color: var(--white);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .popup-close:hover {
+            background: #c62828;
+            transform: rotate(90deg);
+        }
+
+        .popup-badge {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: var(--white);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .popup-title {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .popup-discount {
+            font-size: 4rem;
+            color: var(--gold-accent);
+            font-weight: bold;
+            margin: 1rem 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .popup-text {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .popup-btn {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            color: var(--white);
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(26, 77, 46, 0.3);
+        }
+
+        .popup-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(26, 77, 46, 0.4);
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+        }
+
+        .popup-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
+    <!-- Popup Overlay -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-box">
+            <button class="popup-close" onclick="closePopup()">×</button>
+            <div class="popup-badge">🎉 Grand Opening Offer</div>
+            <div class="popup-icon">🎁</div>
+            <h2 class="popup-title">Welcome to Maria's Creations!</h2>
+            <div class="popup-discount">20% OFF</div>
+            <p class="popup-text">
+                Get an exclusive <strong>20% discount</strong> on your first order!<br>
+                Premium quality fabrics & accessories waiting for you.
+            </p>
+            <button class="popup-btn" onclick="goToProducts()">Shop Now & Save</button>
+        </div>
+    </div>
     <!-- Header -->
     <header>
         <nav>
             <div class="logo">
                 <img src="https://i.imgur.com/7i9PcNj.png" alt="Maria's Creations Logo" class="logo-img">
                 <div class="logo-text">
-                    <span>MR Creation's</span>
-                    
+                    <span>Maria's Creations</span>
+                    <span class="logo-sub">MR Creations</span>
                 </div>
             </div>
             <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
@@ -539,7 +682,7 @@
     <!-- Home Section -->
     <section id="home" class="content-section">
         <div class="hero">
-            <h1>Welcome to MR Creations</h1>
+            <h1>Welcome to Maria's Creations</h1>
             <p>Premium Quality Fabrics & Accessories</p>
             <a href="#products" class="cta-button" onclick="showSection('products')">Shop Now</a>
         </div>
@@ -764,10 +907,12 @@
             showSection('products');
         }
 
-        // Order product via WhatsApp
-        function orderProduct(productId) {
+        // Order product via WhatsApp with image
+        async function orderProduct(productId) {
             const product = products.find(p => p.id === productId);
-            const message = `Hello! I'm interested in ordering:
+            
+            // Create message with product details
+            let message = `Hello! I'm interested in ordering:
 
 *${product.name}*
 Price: ${product.price}
@@ -775,6 +920,35 @@ Description: ${product.description}
 
 Please provide more details.`;
 
+            // If product has real image and browser supports Share API
+            if (product.image.startsWith('http') && navigator.share) {
+                try {
+                    // Fetch the image
+                    const response = await fetch(product.image);
+                    const blob = await response.blob();
+                    const file = new File([blob], `${product.name}.jpg`, { type: blob.type });
+                    
+                    // Check if sharing files is supported
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            title: product.name,
+                            text: message,
+                            files: [file]
+                        });
+                        return; // Exit if share was successful
+                    }
+                } catch (error) {
+                    console.log('Share API failed, falling back to WhatsApp link:', error);
+                }
+            }
+            
+            // Fallback: Open WhatsApp with text and image URL
+            if (product.image.startsWith('http')) {
+                message += `
+
+Product Image: ${product.image}`;
+            }
+            
             const encodedMessage = encodeURIComponent(message);
             window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
         }
@@ -811,7 +985,33 @@ Please provide more details.`;
         // Initialize
         window.onload = function() {
             loadProducts('all');
+            // Show popup after a short delay
+            setTimeout(() => {
+                document.getElementById('popupOverlay').style.display = 'flex';
+            }, 1000);
         };
+
+        // Close popup
+        function closePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+        }
+
+        // Go to products section from popup
+        function goToProducts() {
+            closePopup();
+            showSection('products');
+            // Smooth scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Close popup when clicking outside
+        document.addEventListener('click', function(event) {
+            const popup = document.querySelector('.popup-box');
+            const overlay = document.getElementById('popupOverlay');
+            if (event.target === overlay) {
+                closePopup();
+            }
+        });
     </script>
 </body>
 </html>
