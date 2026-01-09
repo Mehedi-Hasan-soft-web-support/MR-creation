@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maria's Creations - MR Creations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #1a4d2e;
+            --light-green: #2d5f3f;
+            --lighter-green: #4f7942;
+            --accent-green: #7cb342;
+            --gold-accent: #d4af37;
+            --bg-cream: #faf8f3;
+            --white: #ffffff;
+            --text-dark: #2c2c2c;
+            --text-gray: #666;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.8;
+            letter-spacing: 0.3px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--gold-accent);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: 50px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .logo-text {
+            color: var(--white);
+            font-size: 1.6rem;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-sub {
+            font-size: 0.85rem;
+            font-weight: normal;
+            opacity: 0.9;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--white);
+            color: var(--primary-green);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--white);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            top: 100%;
+            left: 0;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown-content a {
+            color: var(--primary-green);
+            padding: 0.8rem 1.2rem;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--primary-green);
+            color: var(--white);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(45, 80, 22, 0.7), rgba(45, 80, 22, 0.7)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%234a7c2c" width="1200" height="600"/><path fill="%236b9d4a" opacity="0.3" d="M0,300 Q300,200 600,300 T1200,300 L1200,600 L0,600 Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            background-color: var(--white);
+            color: var(--primary-green);
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Products Section */
+        .products-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold-accent), transparent);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(26, 77, 46, 0.25);
+            border-color: var(--gold-accent);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(135deg, rgba(26, 77, 46, 0.9), rgba(124, 179, 66, 0.9));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></svg>');
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3 {
+            color: var(--primary-green);
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .product-info p {
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .order-btn {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            width: 100%;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .order-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .order-btn:hover::before {
+            left: 100%;
+        }
+
+        .order-btn:hover {
+            background: var(--white);
+            color: var(--primary-green);
+            box-shadow: 0 0 0 2px var(--gold-accent) inset;
+            transform: translateY(-2px);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .faq-item {
+            background: var(--white);
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .faq-question {
+            background-color: var(--light-green);
+            color: var(--white);
+            padding: 1.2rem;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background-color: var(--white);
+            color: var(--primary-green);
+        }
+
+        .faq-answer {
+            padding: 0 1.2rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            color: var(--text-gray);
+        }
+
+        .faq-answer.active {
+            padding: 1.2rem;
+            max-height: 500px;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Footer */
+        footer {
+            background: #000000;
+            color: var(--white);
+            padding: 3rem 2rem 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            border-bottom: 2px solid var(--accent-green);
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            padding: 0.3rem 0;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-green);
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            opacity: 0.8;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            max-width: 600px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .contact-info {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .contact-info h3 {
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 1.5rem;
+            color: var(--text-gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--primary-green);
+                padding: 1rem;
+                gap: 0;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                background-color: var(--light-green);
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="https://i.imgur.com/7i9PcNj.png" alt="Maria's Creations Logo" class="logo-img">
+                <div class="logo-text">
+                    <span>Maria's Creations</span>
+                    <span class="logo-sub">MR Creations</span>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" onclick="showSection('home')">Home</a></li>
+                <li class="dropdown">
+                    <a href="#products" onclick="showSection('products')">Products ▼</a>
+                    <div class="dropdown-content">
+                        <a href="#products" onclick="filterProducts('urna')">Exclusive Urna</a>
+                        <a href="#products" onclick="filterProducts('shawl')">Shawl</a>
+                        <a href="#products" onclick="filterProducts('accessories')">Ladies Accessories</a>
+                    </div>
+                </li>
+                <li><a href="#contact" onclick="showSection('contact')">Contact</a></li>
+                <li><a href="#faq" onclick="showSection('faq')">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Home Section -->
+    <section id="home" class="content-section">
+        <div class="hero">
+            <h1>Welcome to Maria's Creations</h1>
+            <p>Premium Quality Fabrics & Accessories</p>
+            <a href="#products" class="cta-button" onclick="showSection('products')">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="content-section hidden">
+        <div class="products-section">
+            <h2 class="section-title">Our Premium Collection</h2>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="content-section hidden">
+        <div class="contact-section">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-info">
+                <h3>Get in Touch</h3>
+                <p>Have questions? We'd love to hear from you!</p>
+                <a href="https://wa.me/8801312241531?text=Hello%20Maria's%20Creations!" class="cta-button" target="_blank">
+                    💬 Chat on WhatsApp
+                </a>
+                <p style="margin-top: 1.5rem; font-size: 0.9rem;">
+                    Email: info@mariascreations.com<br>
+                    Phone: +880 1312-241531
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="content-section hidden">
+        <div class="faq-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>How do I place an order?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Simply click on any product and you'll be redirected to WhatsApp where you can send us your order details along with the product image. Our team will respond promptly!
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>What payment methods do you accept?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    We accept bKash, Nagad, Rocket, and bank transfers. Payment details will be shared via WhatsApp after order confirmation.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>How long does shipping take?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Delivery typically takes 3-5 business days within Dhaka and 5-7 business days outside Dhaka.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Do you accept returns?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! We have a 7-day return policy for defective or incorrect items. Please refer to our Return Policy for details.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home" onclick="showSection('home')">Home</a></li>
+                    <li><a href="#products" onclick="showSection('products')">Products</a></li>
+                    <li><a href="#contact" onclick="showSection('contact')">Contact Us</a></li>
+                    <li><a href="#faq" onclick="showSection('faq')">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Policies</h3>
+                <ul>
+                    <li><a href="#" onclick="alert('Terms & Conditions page')">Terms & Conditions</a></li>
+                    <li><a href="#" onclick="alert('Privacy Policy page')">Privacy Policy</a></li>
+                    <li><a href="#" onclick="alert('Refund & Return Policy page')">Refund & Return Policy</a></li>
+                    <li><a href="#" onclick="alert('Shipping & Delivery page')">Shipping & Delivery</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Business Info</h3>
+                <ul>
+                    <li><a href="#" onclick="alert('Trade License page')">Trade License</a></li>
+                    <li><a href="#" onclick="alert('Points Information page')">Loyalty Points</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <ul>
+                    <li><a href="https://wa.me/8801312241531" target="_blank">📱 WhatsApp</a></li>
+                    <li><a href="#">📧 Email</a></li>
+                    <li><a href="#">📍 Facebook</a></li>
+                    <li><a href="#">📷 Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Maria's Creations (MR Creations). All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Products Data
+        const products = [
+            {
+                id: 1,
+                name: "Premium Silk Urna",
+                category: "urna",
+                description: "Luxurious silk urna with intricate embroidery",
+                image: "🧣",
+                price: "৳2,500"
+            },
+            {
+                id: 2,
+                name: "Designer Cotton Urna",
+                category: "urna",
+                description: "Soft cotton urna perfect for daily wear",
+                image: "🧣",
+                price: "৳1,200"
+            },
+            {
+                id: 3,
+                name: "Kashmiri Shawl",
+                category: "shawl",
+                description: "Authentic Kashmiri design shawl",
+                image: "https://i.imgur.com/YIRBhtO.jpeg",
+                price: "৳3,500"
+            },
+            {
+                id: 4,
+                name: "Pashmina Shawl",
+                category: "shawl",
+                description: "Ultra-soft pashmina for elegant occasions",
+                image: "https://i.imgur.com/YIRBhtO.jpeg",
+                price: "৳4,200"
+            },
+            {
+                id: 5,
+                name: "Embroidered Clutch",
+                category: "accessories",
+                description: "Handcrafted embroidered evening clutch",
+                image: "👜",
+                price: "৳850"
+            },
+            {
+                id: 6,
+                name: "Designer Handbag",
+                category: "accessories",
+                description: "Elegant leather handbag with gold accents",
+                image: "👜",
+                price: "৳2,800"
+            },
+            {
+                id: 7,
+                name: "Silk Scarf",
+                category: "accessories",
+                description: "Premium silk scarf with floral patterns",
+                image: "🧣",
+                price: "৳950"
+            },
+            {
+                id: 8,
+                name: "Traditional Jewelry Set",
+                category: "accessories",
+                description: "Complete jewelry set for special occasions",
+                image: "💍",
+                price: "৳1,500"
+            }
+        ];
+
+        let currentFilter = 'all';
+        let whatsappNumber = '8801312241531'; // WhatsApp number
+
+        // Load products
+        function loadProducts(filter = 'all') {
+            const grid = document.getElementById('productsGrid');
+            const filteredProducts = filter === 'all' 
+                ? products 
+                : products.filter(p => p.category === filter);
+
+            grid.innerHTML = filteredProducts.map(product => `
+                <div class="product-card" onclick="orderProduct(${product.id})">
+                    <div class="product-image">
+                        ${product.image.startsWith('http') 
+                            ? `<img src="${product.image}" alt="${product.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='${product.image.includes('shawl') ? '🧥' : '🧣'}'">` 
+                            : product.image}
+                    </div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <p style="font-weight: 600; color: var(--gold-accent); font-size: 1.4rem; font-family: Georgia, serif;">${product.price}</p>
+                        <button class="order-btn" onclick="event.stopPropagation(); orderProduct(${product.id})">
+                            Order on WhatsApp
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter products
+        function filterProducts(category) {
+            currentFilter = category;
+            loadProducts(category);
+            showSection('products');
+        }
+
+        // Order product via WhatsApp
+        function orderProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            const message = `Hello! I'm interested in ordering:
+
+*${product.name}*
+Price: ${product.price}
+Description: ${product.description}
+
+Please provide more details.`;
+
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+        }
+
+        // Show section
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            
+            if (sectionId === 'products' && currentFilter === 'all') {
+                loadProducts('all');
+            }
+
+            // Close mobile menu
+            document.getElementById('navLinks').classList.remove('active');
+        }
+
+        // Toggle FAQ
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const answer = element.nextElementSibling;
+            
+            faqItem.classList.toggle('active');
+            answer.classList.toggle('active');
+        }
+
+        // Toggle mobile menu
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // Initialize
+        window.onload = function() {
+            loadProducts('all');
+        };
+    </script>
+</body>
+</html>
